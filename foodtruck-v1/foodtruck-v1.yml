@@ -1,0 +1,79 @@
+---
+# Foodtruck v1
+# :: Spin up EKS, Third Party tools, configure.
+
+- name: (CHECK FOR PERMITS) Pre-flight check
+  hosts: localhost
+  connection: local
+  tags:
+    - always
+  tasks:
+    - name: Check to see if the prefix_user variable is set
+      ansible.builtin.fail:
+        msg: "The variable TF_VAR_prefix_user is set to anonymous or not set at all, please check and run this play again"
+      when: "'TF_VAR_prefix_user' not in ansible_env"
+
+    - name: Don't allow anonymous users
+      ansible.builtin.fail:
+        msg: "The variable TF_VAR_prefix_user is set to anonymous, please check and run this play again"
+      when: ansible_env.TF_VAR_prefix_user == "anonymous"
+
+- name: (SET UP THE FOODTRUCK) Spin Up IaC
+  import_playbook: foodtruck-v1-iacInit.yml
+
+- name: (PREPARE THE DISHES) Artifactory
+  import_playbook: foodtruck-v1-artifactory.yml
+
+- name: (PREPARE THE DISHES) Atlassian toolset
+  import_playbook: foodtruck-v1-atlassian.yml
+
+- name: (PREPARE THE DISHES) Ansible AWX
+  import_playbook: foodtruck-v1-awx.yml
+
+- name: (PREPARE THE DISHES) CMA Front
+  import_playbook: foodtruck-v1-cmafront.yml
+
+- name: (PREPARE THE DISHES) DefectDojo
+  import_playbook: foodtruck-v1-defectdojo.yml
+
+- name: (PREPARE THE DISHES) ELK
+  import_playbook: foodtruck-v1-elk.yml
+
+- name: (PREPARE THE DISHES) Gitlab
+  import_playbook: foodtruck-v1-gitlab.yml
+
+- name: (PREPARE THE DISHES) Jenkins
+  import_playbook: foodtruck-v1-jenkins.yml
+
+- name: (PREPARE THE DISHES) Keycloak
+  import_playbook: foodtruck-v1-keycloak.yml
+
+- name: (PREPARE THE DISHES) MLSecOps
+  import_playbook: foodtruck-v1-mlsecops.yml
+
+- name: (PREPARE THE DISHES) OpenLDAP
+  import_playbook: foodtruck-v1-openldap.yml
+
+- name: (PREPARE THE DISHES) OWASP Dependency Track
+  import_playbook: foodtruck-v1-owaspdeptrack.yml
+
+- name: (PREPARE THE DISHES) PCA
+  import_playbook: foodtruck-v1-pca.yml
+
+- name: (PREPARE THE DISHES) SD Elements
+  import_playbook: foodtruck-v1-sde.yml
+
+- name: (PREPARE THE DISHES) SD Elements Development
+  import_playbook: foodtruck-v1-sde-dev.yml
+
+- name: (PREPARE THE DISHES) SecureCodeBox
+  import_playbook: foodtruck-v1-securecodebox.yml
+
+- name: (PREPARE THE DISHES) SonarQube
+  import_playbook: foodtruck-v1-sonarqube.yml
+
+- name: (PREPARE THE DISHES) Strapi
+  import_playbook: foodtruck-v1-strapi.yml
+
+- name: (PACK UP AND GO) Destroy IaC
+  import_playbook: foodtruck-v1-iacDestroy.yml
