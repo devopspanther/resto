@@ -26,7 +26,7 @@ Parameters needed:
 */
 
 pipeline {
-  agent { label 'jenkins-slave' } 
+  agent any
   environment { 
     IMAGE = "406187633378.dkr.ecr.us-east-1.amazonaws.com/foodtruck:latest"
     REGISTRY = "406187633378.dkr.ecr.us-east-1.amazonaws.com"
