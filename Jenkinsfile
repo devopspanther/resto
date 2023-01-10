@@ -37,7 +37,7 @@ pipeline {
         stage ('Ansible') {
           steps {
             script {
-              sh /* AWS ECR Auth */ '''aws ecr get-login-password --region us-west-1 | docker login --username AWS --password-stdin $REGISTRY'''
+              sh /* AWS ECR Auth */ '''aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin $REGISTRY'''
               docker.image("$IMAGE").inside {
                 sh /* Linting Ansible using ansible-lint */ '''
                   ansible-lint -x command-instead-of-module,command-instead-of-shell,no-changed-when,unnamed-task,experimental,git-latest -p foodtruck-v1/foodtruck-v1.yml
